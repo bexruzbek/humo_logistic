@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
   },
   fullname: {
     type: String,
-    required: [true, 'Пожалуста введите ваше Ф.И.О']
+    required: [true, 'Пожалуйста введите ваше Ф.И.О']
   },
   password: {
     type: String,
@@ -25,15 +25,15 @@ const UserSchema = new mongoose.Schema({
   },
   transportType: {
     type: String,
-    required: [true, 'Пожалуста выберите тип транспорта']
+    required: [true, 'Пожалуйста выберите тип транспорта']
   },
   transportGovNumber: {
     type: String,
-    required: [true, 'Пожалуста введите государственный номер вашего транспорта']
+    required: [true, 'Пожалуйста введите государственный номер вашего транспорта']
   },
   baggageVolume: {
     type: String,
-    required: [true, 'Пожалуста укажите объем вашего багажа']
+    required: [true, 'Пожалуйста укажите объем вашего багажа']
   },
   passportPhoto: {
     type: String,

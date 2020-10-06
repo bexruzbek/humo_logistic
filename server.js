@@ -33,6 +33,8 @@ app.use(fileupload());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Registr routes
+app.use('/api/v1/auth', require('./routes/auth'));
 
 app.use(errorHandler); 
 
