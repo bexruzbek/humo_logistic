@@ -20,8 +20,8 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'driver'],
-    default: 'user'
+    enum: ['driver'],
+    default: 'driver'
   },
   transportType: {
     type: String,
@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema({
   baggageVolume: {
     type: String,
     required: [true, 'Пожалуйста укажите объем вашего багажа']
+  },
+  volumeType: {
+    type: String,
+    required: true
   },
   passportPhoto: {
     type: String,

@@ -14,6 +14,7 @@ exports.register = asyncHandler(async (req, res, next)=>{
     transportType,
     transportGovNumber,
     baggageVolume,
+    volumeType
   } = req.body;
 
   if(!req.files){
@@ -60,6 +61,7 @@ exports.register = asyncHandler(async (req, res, next)=>{
     transportType,
     transportGovNumber,
     baggageVolume,
+    volumeType,
     passportPhoto: passportPhoto.name,
     techPassportPhoto: techPassportPhoto.name
   });
@@ -93,6 +95,37 @@ exports.login = asyncHandler(async (req, res, next)=>{
   }
 
   sendTokenResponse(user, 200, res);
+});
+
+// @desc      Get user
+// @route     GET /api/v1/auth/me
+// @access    Private
+exports.getMe = asyncHandler(async (req, res, next)=>{
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
+// @desc      Update user data details
+// @route     PUT /api/v1/auth/updatedetails
+// @access    Private
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  const fieldsToUpdate = {
+    fullname: req.body.fullname
+  };
+
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
 });
 
 // Get token from model, create cookie and send response
