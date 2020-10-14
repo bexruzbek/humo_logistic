@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['driver'],
+    enum: ['driver', 'admin'],
     default: 'driver'
   },
   transportType: {
@@ -51,9 +51,8 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  activity: {
-    type: Boolean,
-    default: false
+  timeOfStatus: {
+    type: String
   },
   location: {
     type: String

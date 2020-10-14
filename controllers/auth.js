@@ -128,10 +128,32 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Update user status
+// @route     PUT /api/v1/auth/updatedetails
+// @access    Private
+exports.updateStatus = asyncHandler(async (req, res, next) => {
+  const fieldsToUpdate = {
+    status: req.body.status,
+    location: req.body.location,
+    timeOfStatus: req.body.timeOfStatus
+  };
+
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
   const token = user.getSignedJwtToken();
+  let role;
 
   const options = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
@@ -142,11 +164,18 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
+  if(user.role === 'admin'){
+    role = 'admin';
+  } else {
+    role = 'driver';
+  }
+
   res
     .status(statusCode)
     .cookie('token', token, options)
     .json({
       success: true,
-      token
+      token,
+      role
     });
 };
