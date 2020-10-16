@@ -113,19 +113,18 @@ exports.getMe = asyncHandler(async (req, res, next)=>{
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  const fieldsToUpdate = {
-    fullname: req.body.fullname
-  };
+  const user = await User.findById(req.user.id).select('+password');
 
-  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
-    new: true,
-    runValidators: true
-  });
+  // Check current password
+  if(!(await user.matchPassword(req.body.currentPassword))){
+    return next(new ErrorResponse('Parol xato kiritildi', 401));
+  }
 
-  res.status(200).json({
-    success: true,
-    data: user
-  });
+  user.password = req.body.newPassword;
+  user.fullname = req.body.fullname;
+  await user.save();
+
+  sendTokenResponse(user, 200, res);
 });
 
 // @desc      Update user status
