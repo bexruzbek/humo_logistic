@@ -65,6 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Registr routes
 app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/users', require('./routes/users'));
+app.use('/api/v1/language', require('./routes/language'));
 
 app.use(errorHandler); 
 

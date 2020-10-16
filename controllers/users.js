@@ -15,6 +15,11 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 exports.searachUsers = asyncHandler(async (req, res, next) => {
   const search = req.query.search;
 
+  if(search === ""){
+    res.send([]);
+    return;
+  }
+
   User.find({ 
     fullname: { $regex: new RegExp(search), $options: 'i' } 
     }, 
