@@ -9,6 +9,23 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
 
+// @desc      Search all users
+// @route     POST /api/v1/users?search
+// @access    Private/Admin
+exports.searachUsers = asyncHandler(async (req, res, next) => {
+  const search = req.query.search;
+
+  User.find({ 
+    fullname: { $regex: new RegExp(search), $options: 'i' } 
+    }, 
+    { 
+      _id: 0, 
+      __v: 0
+    }, function(err, data){
+      res.status(200).json(data);
+    });
+});
+
 // @desc      Get one user
 // @route     GET /api/v1/users/:id
 // @access    Private/Admin
