@@ -1,6 +1,7 @@
 {
   "location_uz": {
     "tashkent": "Toshkent viloyati",
+    "tashkent_city": "Toshkent shahri",
     "namangan": "Namangan viloyati",
     "andijan": "Andijon viloyati",
     "fergana": "Farg'ona viloyati",
@@ -16,6 +17,7 @@
   },
   "location_ru": {
     "tashkent": "Ташкентская область",
+    "tashkent_city": "город Ташкент",
     "namangan": "Наманганская область",
     "andijan": "Андижанкий область",
     "fergana": "Ферганская область",
@@ -108,5 +110,34 @@
     {"label": "MZKT", "value": "MZKT"},
     {"label": "URAL", "value": "URAL"},
     {"label": "Другая марка", "value": "Другая марка"}
-  ]
+  ],
+  "typeOfCar_uz": {
+    "tent": "Tent qoplama kuzov",
+    "tent_shtor": "Tent pardali kuzov",
+    "izoterm": "Izotermik kuzov",
+    "refregator": "Refregeratorli kuzov",
+    "metal": "Metal qoplamali kuzov",
+    "bortavoy": "Bortli kuzov",
+    "container": "Konteyner tashuvchi kuzov",
+    "trailer": "Trailer kuzov",
+    "evakuator": "Evokuvator",
+    "gasoline": "Benzin tashuvchi",
+    "water": "Suv tashuvchi",
+    "open_platform": "Ochiq platforma"
+  },
+  "typeOfCar_ru": {
+    "tent": "Тентовка",
+    "tent_shtor": "Тент шторка",
+    "izoterm": "Изотермический кузов",
+    "refregator": "Рефрижераторный кузов",
+    "metal": "Цельнометаллический кузов",
+    "bortavoy": "Бортовой кузов",
+    "container": "Контейнеровоз",
+    "trailer": "Трейлер",
+    "evakuator": "Эвакуатор",
+    "gasoline": "Бензовоз",
+    "water": "Водовоз",
+    "open_platform": "Открытая платформа"
+  }
 }
+

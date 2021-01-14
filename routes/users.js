@@ -4,7 +4,8 @@ const {
   getUser,
   updateUser,
   deleteUser,
-  searachUsers
+  searchUsers,
+  sendMessage
 } = require('../controllers/users');
 
 const User = require('../models/User');
@@ -25,6 +26,7 @@ router.route('/:id')
   .put(updateUser)
   .delete(deleteUser);
 
-router.route('/search').post(searachUsers);
+router.route('/search').post(searchUsers);
+router.route('/sendmessage').post(sendMessage);
   
 module.exports = router;

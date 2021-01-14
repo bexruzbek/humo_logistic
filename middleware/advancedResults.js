@@ -17,7 +17,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
   // Finding resource
-  query = model.find(JSON.parse(queryStr));
+  query = model.find(JSON.parse(queryStr)).find({ role: { $ne: 'admin' } });
 
   // Select fields
   if(req.query.select){

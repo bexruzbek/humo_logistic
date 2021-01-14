@@ -7,11 +7,13 @@
     "phonenumber": "998911620802",
     "fullname": "Adam Johnson",
     "password": "1234567",
-    "transportType": "Kamaz",
+    "transportType": "KAMAZ",
     "transportGovNumber": "70 A 726 NN ",
-    "baggageVolume": "1",
-    "volumeType": "tonna",
-    "role": "driver"
+    "baggageVolume": 30,
+    "baggageMass": 20,
+    "location": "Toshkent viloyati",
+    "role": "driver",
+    "oneID": "2043d556-9a24-40a0-96fe-2b5ceaae2549"
   },
   {
     "passportPhoto": "photo_1601977027347.png",
@@ -21,11 +23,13 @@
     "phonenumber": "998911620807",
     "fullname": "Bran Johnson",
     "password": "1234567",
-    "transportType": "Kamaz",
+    "transportType": "CAMC",
     "transportGovNumber": "70 K 155 OP ",
-    "baggageVolume": "1",
-    "volumeType": "tonna",
-    "role": "driver"
+    "baggageVolume": 50,
+    "baggageMass": 25,
+    "location": "Qashqadaryo viloyati",
+    "role": "driver",
+    "oneID": "e3d7ae4f-3df1-4299-8eb9-e4b251929b90"
   },
   {
     "passportPhoto": "photo_1601977027347.png",
@@ -35,11 +39,13 @@
     "phonenumber": "998911620803",
     "fullname": "John Doe",
     "password": "1234567",
-    "transportType": "Damas",
+    "transportType": "HOWO",
     "transportGovNumber": "70 B 125 AO ",
-    "baggageVolume": "600",
-    "volumeType": "m3",
-    "role": "driver"
+    "baggageVolume": 60,
+    "baggageMass": 30,
+    "location": "Qashqadaryo viloyati",
+    "role": "driver",
+    "oneID": "f8dac892-f6f4-4bdb-8791-52e9e16a003c"
   },
   {
     "passportPhoto": "photo_1601977027347.png",
@@ -51,9 +57,11 @@
     "password": "1234567",
     "transportType": "Damas",
     "transportGovNumber": "70 B 259 IO ",
-    "baggageVolume": "600",
-    "volumeType": "m3",
-    "role": "driver"
+    "location": "Andijon viloyati",
+    "baggageVolume": 70,
+    "baggageMass": 30,
+    "role": "driver",
+    "oneID": "1b61cb2b-9744-4667-ab24-fa8638112a8e"
   },
   {
     "passportPhoto": "photo_1601977027347.png",
@@ -65,9 +73,11 @@
     "password": "1234567",
     "transportType": "MAN",
     "transportGovNumber": "70 O 258 AAO ",
-    "baggageVolume": "3",
-    "volumeType": "tonna",
-    "role": "driver"
+    "location": "Namangan viloyati",
+    "baggageVolume": 300,
+    "baggageMass": 35,
+    "role": "driver",
+    "oneID": "68e5cb0c-5627-41ca-ab16-cab2437d2c0d"
   },
   {
     "passportPhoto": "photo_1601977027347.png",
@@ -79,9 +89,11 @@
     "password": "1234567",
     "transportType": "ISUZU",
     "transportGovNumber": "70 L 582 DL ",
-    "baggageVolume": "1.5",
-    "volumeType": "tonna",
-    "role": "driver"
+    "baggageVolume": 100,
+    "baggageMass": 20,
+    "location": "Sirdaryo viloyati",
+    "role": "driver",
+    "oneID": "2043d556-9a24-40a0-96fe-2b5ceaae2549"
   },
   {
     "passportPhoto": "photo_1601977027347.png",
@@ -93,8 +105,58 @@
     "password": "1234567",
     "transportType": "Kamaz",
     "transportGovNumber": "70 A 726 NN ",
-    "baggageVolume": "1",
-    "volumeType": "tonna",
-    "role": "admin"
+    "baggageVolume": 60,
+    "baggageMass": 30,
+    "location": "Navoiy viloyati",
+    "role": "admin",
+    "oneID": "e3d7ae4f-3df1-4299-8eb9-e4b251929b90"
+  },
+  {
+    "passportPhoto": "photo_1601977027347.png",
+    "techPassportPhoto": "photo_1601977027348.png",
+    "activity": false,
+    "status": "Свободен",
+    "phonenumber": "998912222222",
+    "fullname": "Azim Down",
+    "password": "1234567",
+    "transportType": "ISUZU",
+    "transportGovNumber": "70 L 582 DL ",
+    "baggageVolume": 55,
+    "baggageMass": 22,
+    "location": "Surxandaryo viloyati",
+    "role": "driver",
+    "oneID": "f8dac892-f6f4-4bdb-8791-52e9e16a003c"
+  },
+  {
+    "passportPhoto": "photo_1601977027347.png",
+    "techPassportPhoto": "photo_1601977027348.png",
+    "activity": false,
+    "status": "Занят",
+    "phonenumber": "998914444444",
+    "fullname": "Golib Baratov",
+    "password": "1234567",
+    "transportType": "Hyundai",
+    "transportGovNumber": "70 L 582 DL ",
+    "baggageVolume": 100,
+    "baggageMass": 15,
+    "location": "Toshkent viloyati",
+    "role": "driver",
+    "oneID": "1b61cb2b-9744-4667-ab24-fa8638112a8e"
+  },
+  {
+    "passportPhoto": "photo_1601977027347.png",
+    "techPassportPhoto": "photo_1601977027348.png",
+    "activity": false,
+    "status": "Занят",
+    "phonenumber": "998913333333",
+    "fullname": "Saddam Husain",
+    "password": "1234567",
+    "transportType": "Foton",
+    "transportGovNumber": "70 L 582 DL ",
+    "baggageVolume": 35,
+    "baggageMass": 30,
+    "location": "Qashqadaryo viloyati",
+    "role": "driver",
+    "oneID": "68e5cb0c-5627-41ca-ab16-cab2437d2c0d"
   }
 ]

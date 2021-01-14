@@ -12,9 +12,12 @@ exports.register = asyncHandler(async (req, res, next)=>{
     fullname, 
     password, 
     transportType,
+    typeOfCar,
     transportGovNumber,
     baggageVolume,
-    volumeType
+    baggageMass,
+    location,
+    oneID
   } = req.body;
 
   if(!req.files){
@@ -38,7 +41,7 @@ exports.register = asyncHandler(async (req, res, next)=>{
 
   // Create custom filename
   passportPhoto.name = `photo_${new Date().getTime()}${path.parse(passportPhoto.name).ext}`;
-  techPassportPhoto.name = `photo_${new Date().getTime()}${path.parse(techPassportPhoto.name).ext}`;
+  techPassportPhoto.name = `photo_${new Date().getTime() + 5}${path.parse(techPassportPhoto.name).ext}`;
 
   passportPhoto.mv(`${process.env.FILE_UPLOAD_PATH}/${passportPhoto.name}`, async err =>{
     if(err){
@@ -59,11 +62,14 @@ exports.register = asyncHandler(async (req, res, next)=>{
     fullname, 
     password, 
     transportType,
+    typeOfCar,
     transportGovNumber,
     baggageVolume,
-    volumeType,
+    baggageMass,
+    location,
     passportPhoto: passportPhoto.name,
-    techPassportPhoto: techPassportPhoto.name
+    techPassportPhoto: techPassportPhoto.name,
+    oneID: [oneID]
   });
 
   sendTokenResponse(user, 200, res);
@@ -73,7 +79,7 @@ exports.register = asyncHandler(async (req, res, next)=>{
 // @route     POST /api/v1/auth/login
 // @access    Public
 exports.login = asyncHandler(async (req, res, next)=>{
-  const { phonenumber, password } = req.body;
+  const { phonenumber, password, oneID } = req.body;
 
   // Validate email & password
   if(!phonenumber || !password){
@@ -94,7 +100,41 @@ exports.login = asyncHandler(async (req, res, next)=>{
     return next(new ErrorResponse('Некорректные данные', 401));
   }
 
+  let arrOfIds = [...user.oneID];
+  const index = user.oneID.indexOf(oneID);
+
+  if(index < 0){
+    arrOfIds.push(oneID);
+    await User.findByIdAndUpdate(user.id, {oneID: arrOfIds}, {
+      new: true,
+      runValidators: true
+    });
+  }
+
   sendTokenResponse(user, 200, res);
+});
+
+// @desc      Logout user
+// @route     POST /api/v1/auth/logout
+// @access    Private
+exports.logout = asyncHandler(async (req, res, next)=>{
+  const { oneID } = req.body;
+
+  const user = await User.findById(req.user.id);
+
+  let arrOfIds = [...user.oneID];
+  const index = user.oneID.indexOf(oneID);
+
+  if(index > -1){
+    arrOfIds.splice(index,1);
+    await User.findByIdAndUpdate(user.id, {oneID: arrOfIds}, {
+      new: true,
+      runValidators: true
+    });
+  }
+
+  res.status(200).json({ success: true, data: {} });
+
 });
 
 // @desc      Get user
@@ -120,15 +160,142 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Parol xato kiritildi', 401));
   }
 
+  if(req.body.phonenumber){
+    user.phonenumber = req.body.phonenumber;
+  }
+  if(req.body.fullname){
+    user.fullname = req.body.fullname;
+  }
+
   user.password = req.body.newPassword;
-  user.fullname = req.body.fullname;
   await user.save();
 
   sendTokenResponse(user, 200, res);
 });
 
+// @desc      Edit user profile
+// @route     PUT /api/v1/auth/editprofile
+// @access    Private
+exports.editProfile = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  if(req.files){
+    if(!req.files.passportPhoto && req.files.techPassportPhoto){
+      const techPassportPhoto = req.files.techPassportPhoto;
+    
+      // Make sure the image is a photo
+      if(!techPassportPhoto.mimetype.startsWith('image')){
+        return next(new ErrorResponse(`Пожалуйста загрузите файлы типа изображения`, 400));
+      }
+    
+      // Check the file size of image
+      if(techPassportPhoto.size > process.env.MAX_FILE_UPLOAD){
+        return next(new ErrorResponse(`Максимально допустимый размер изображения ${process.env.MAX_FILE_UPLOAD}`, 400));
+      }
+    
+      // Create custom filename
+      techPassportPhoto.name = `photo_${new Date().getTime() + 5}${path.parse(techPassportPhoto.name).ext}`;
+    
+      techPassportPhoto.mv(`${process.env.FILE_UPLOAD_PATH}/${techPassportPhoto.name}`, async err =>{
+        if(err){
+          console.error(err);
+          return next(new ErrorResponse(`Проблема с загрузкой файлов`, 500));
+        }
+      });
+  
+      user.techPassportPhoto = techPassportPhoto.name; 
+    } else if(!req.files.techPassportPhoto && req.files.passportPhoto){
+      const passportPhoto = req.files.passportPhoto;
+    
+      // Make sure the image is a photo
+      if(!passportPhoto.mimetype.startsWith('image')){
+        return next(new ErrorResponse(`Пожалуйста загрузите файлы типа изображения`, 400));
+      }
+    
+      // Check the file size of image
+      if(passportPhoto.size > process.env.MAX_FILE_UPLOAD){
+        return next(new ErrorResponse(`Максимально допустимый размер изображения ${process.env.MAX_FILE_UPLOAD}`, 400));
+      }
+    
+      // Create custom filename
+      passportPhoto.name = `photo_${new Date().getTime()}${path.parse(passportPhoto.name).ext}`;
+    
+      passportPhoto.mv(`${process.env.FILE_UPLOAD_PATH}/${passportPhoto.name}`, async err =>{
+        if(err){
+          console.error(err);
+          return next(new ErrorResponse(`Проблема с загрузкой файлов`, 500));
+        }
+      });
+  
+      user.passportPhoto = passportPhoto.name; 
+      
+    } else if(req.files.passportPhoto && req.files.techPassportPhoto){
+      const passportPhoto = req.files.passportPhoto;
+      const techPassportPhoto = req.files.techPassportPhoto;
+    
+      // Make sure the image is a photo
+      if(!passportPhoto.mimetype.startsWith('image') && !techPassportPhoto.mimetype.startsWith('image')){
+        return next(new ErrorResponse(`Пожалуйста загрузите файлы типа изображения`, 400));
+      }
+    
+      // Check the file size of image
+      if(passportPhoto.size > process.env.MAX_FILE_UPLOAD || techPassportPhoto.size > process.env.MAX_FILE_UPLOAD){
+        return next(new ErrorResponse(`Максимально допустимый размер изображения ${process.env.MAX_FILE_UPLOAD}`, 400));
+      }
+    
+      // Create custom filename
+      passportPhoto.name = `photo_${new Date().getTime()}${path.parse(passportPhoto.name).ext}`;
+      techPassportPhoto.name = `photo_${new Date().getTime() + 5}${path.parse(techPassportPhoto.name).ext}`;
+    
+      passportPhoto.mv(`${process.env.FILE_UPLOAD_PATH}/${passportPhoto.name}`, async err =>{
+        if(err){
+          console.error(err);
+          return next(new ErrorResponse(`Проблема с загрузкой файлов`, 500));
+        }
+      });
+      techPassportPhoto.mv(`${process.env.FILE_UPLOAD_PATH}/${techPassportPhoto.name}`, async err =>{
+        if(err){
+          console.error(err);
+          return next(new ErrorResponse(`Проблема с загрузкой файлов`, 500));
+        }
+      });
+      user.passportPhoto = passportPhoto.name; 
+      user.techPassportPhoto = techPassportPhoto.name; 
+    }
+  }
+  
+  if(req.body.fullname){
+    user.fullname = req.body.fullname; 
+  }
+  if(req.body.phonenumber){
+    user.phonenumber = req.body.phonenumber; 
+  }
+  if(req.body.transportType){
+    user.transportType = req.body.transportType; 
+  }
+  if(req.body.typeOfCar){
+    user.typeOfCar = req.body.typeOfCar; 
+  }
+  if(req.body.transportGovNumber){
+    user.transportGovNumber = req.body.transportGovNumber; 
+  }
+  if(req.body.baggageMass){
+    user.baggageMass = req.body.baggageMass; 
+  }
+  if(req.body.baggageVolume){
+    user.baggageVolume = req.body.baggageVolume; 
+  }
+    
+  const edited = await user.save();
+
+  res.status(200).json({
+    success: true,
+    data: edited
+  });
+});
+
 // @desc      Update user status
-// @route     PUT /api/v1/auth/updatedetails
+// @route     PUT /api/v1/auth/updatestatus
 // @access    Private
 exports.updateStatus = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {

@@ -1,0 +1,18 @@
+[
+  {
+    "passportPhoto": "photo_1601977027347.png",
+    "techPassportPhoto": "photo_1601977027348.png",
+    "activity": false,
+    "status": "Свободен",
+    "phonenumber": "998911620806",
+    "fullname": "Admin Adminjonov",
+    "password": "1234567",
+    "transportType": "Kamaz",
+    "transportGovNumber": "70 A 726 NN ",
+    "baggageVolume": "60",
+    "baggageMass": "30",
+    "location": "Navoiy viloyati",
+    "role": "admin",
+    "oneID": "e3d7ae4f-3df1-4299-8eb9-e4b251929b90"
+  }
+]

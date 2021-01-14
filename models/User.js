@@ -27,17 +27,21 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Пожалуйста выберите тип транспорта']
   },
+  typeOfCar: {
+    type: String,
+    required: [true, 'Пожалуйста выберите тип транспорта']
+  },
   transportGovNumber: {
     type: String,
     required: [true, 'Пожалуйста введите государственный номер вашего транспорта']
   },
   baggageVolume: {
-    type: String,
+    type: Number,
     required: [true, 'Пожалуйста укажите объем вашего багажа']
   },
-  volumeType: {
-    type: String,
-    required: true
+  baggageMass: {
+    type: Number,
+    required: [true, 'Пожалуйста укажите грузаподемность вашего багажа']
   },
   passportPhoto: {
     type: String,
@@ -61,11 +65,54 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['Свободен', 'Занят'],
     default: 'Свободен'
-  }
+  },
+  oneID: [String]
 });
+
+//Creating indexes
+UserSchema.index({ 
+  fullname: 'text', 
+  location: 'text', 
+  transportType: 'text', 
+  typeOfCar: 'text', 
+  transportGovNumber: 'text' 
+});
+
+//Custom partial search method
+UserSchema.statics = {
+  searchPartial: function(q, callback) {
+      return this.find({
+          $or: [
+              { "fullname": new RegExp(q, "gi") },
+              { "location": new RegExp(q, "gi") },
+              { "transportType": new RegExp(q, "gi") },
+              { "typeOfCar": new RegExp(q, "gi") },
+              { "transportGovNumber": new RegExp(q, "gi") },
+          ]
+      }, callback);
+  },
+
+  searchFull: function (q, callback) {
+      return this.find({
+          $text: { $search: q, $caseSensitive: false }
+      }, callback);
+  },
+
+  search: function(q, callback) {
+      this.searchFull(q, (err, data) => {
+          if (err) return callback(err, data);
+          if (!err && data.length) return callback(err, data);
+          if (!err && data.length === 0) return this.searchPartial(q, callback);
+      });
+  },
+};
 
 // Hashing password with bcrypt
 UserSchema.pre('save', async function(next){
+  if(!this.isModified('password')){
+    next();
+  }
+  
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
